@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Lcz
+@{ 
+    var modelOnly = Html.ViewData.ModelState.Where(x => x.Key == "");
+}
+@if (!ViewData.ModelState.IsValid && modelOnly.Any())
+{
+    <div class="alerts">
+        @foreach (var e in modelOnly.SelectMany(kv => kv.Value.Errors))
+        {
+            <div class="alert alert-danger mb-2">@e.ErrorMessage</div>
+        }
+        <div class="text-right">
+            <a class="vwm-close" data-dismiss="alerts">@Lcz["ClearAll"]</a>
+        </div>
+    </div>
+}

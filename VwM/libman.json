@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@3.0.0",
+      "destination": "wwwroot/lib/signalr/",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.js.map",
+        "dist/browser/signalr.min.js",
+        "dist/browser/signalr.min.js.map"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "select2@4.0.12",
+      "destination": "wwwroot/lib/select2/",
+      "files": [
+        "dist/css/select2.css",
+        "dist/css/select2.min.css",
+        "dist/js/select2.full.js",
+        "dist/js/select2.full.min.js",
+        "dist/js/select2.js",
+        "dist/js/select2.min.js",
+        "dist/js/i18n/ru.js",
+        "dist/js/i18n/en.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "shufflejs@5.2.3",
+      "destination": "wwwroot/lib/shufflejs/",
+      "files": [
+        "dist/shuffle.esm.js",
+        "dist/shuffle.esm.js.map",
+        "dist/shuffle.js",
+        "dist/shuffle.js.map",
+        "dist/shuffle.min.js",
+        "dist/shuffle.min.js.map"
+      ]
+    }
+  ]
+}

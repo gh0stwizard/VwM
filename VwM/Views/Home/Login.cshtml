@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Lcz
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = Lcz["Title"];
+}
+
+<div class="form-limiter">
+    <h3 class="text-center">@Lcz["Title"]</h3>
+    <div class="form-container">
+        <div class="form-wrapper">
+            <form class="validate-form" asp-action="Login" asp-antiforgery="true">
+                <partial name="_FormValidation">
+                @Html.Hidden("returnUrl", Context.Request.Query["ReturnUrl"].ToString())
+                <div class="form-group required">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" autofocus>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group required">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input mt-2" />
+                    <label asp-for="RememberMe" class="form-check-label"></label>
+                </div>
+                <div class="float-right">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">@Lcz["SignIn"]</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/simpleform.css" />
+}

@@ -1,0 +1,5 @@
+* Почистить вьюшки от неиспользуемых language
+* Локализация сообщений об ошибках (TimedOut) для Ping в PingHub
+* Улучшить форму входа (иконки, Input group для Bootstrap)
+* Сменить jquery ui progressbar на bootstrap progress
+

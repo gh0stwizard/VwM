@@ -1,0 +1,60 @@
+﻿.item {
+}
+
+.item__inner {
+    border-radius: .325em;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background: #ecf0f1;
+}
+
+.item__inner > a {
+    color: black;
+}
+
+.aspect {
+    background: #d4e4e8;
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 100%;
+}
+
+.aspect:hover {
+    background: #e8874e;
+    -webkit-transition: background-color 0.5s ease-out;
+    -moz-transition: background-color 0.5s ease-out;
+    -o-transition: background-color 0.5s ease-out;
+    transition: background-color 0.5s ease-out;
+}
+
+aspect > div, .aspect__inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.aspect__inner_text {
+    text-align: center;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aspect--16x9 {
+    padding-bottom: 56.25%;
+}
+
+.item-details {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1em;
+}

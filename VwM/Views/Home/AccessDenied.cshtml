@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Lcz
+@{
+    ViewData["Title"] = Lcz["Title"];
+    const string email = "support@notionblock.com";
+}
+
+<div class="text-center">
+    <h3>@ViewData["Title"]</h3>
+    <p>@(Lcz["HelpText"]): <a href="mailto:@(email)" title="@Lcz["SendEmail"]">@email</a></p>
+</div>

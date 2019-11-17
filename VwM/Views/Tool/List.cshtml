@@ -1,0 +1,82 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Lcz
+@model ToolListViewModel
+@{
+    ViewData["Title"] = Lcz["Title"];
+    var language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+}
+
+<h3 class="text-center">@ViewData["Title"]</h3>
+
+<div class="container">
+    <div class="form-row">
+        <div class="form-group col-8">
+            <div><label asp-for="ProtocolTypes" class="control-label font-weight-bold"></label></div>
+            <div class="btn-group">
+                <button class="btn btn-primary" data-group="all">@Lcz["All"]</button>
+                @foreach (var type in Model.ProtocolTypes.Value)
+                {
+                    <button class="btn btn-primary" data-group="@type.TypeName">@type.Name</button>
+                }
+            </div>
+        </div>
+        <div class="form-group col-4">
+            <div><label asp-for="OsTypes" class="control-label font-weight-bold"></label></div>
+            <div class="btn-group">
+                <button class="btn btn-primary" data-group="all">@Lcz["All"]</button>
+                @foreach (var type in Model.OsTypes.Value)
+                {
+                    <button class="btn btn-primary" data-group="@type.TypeName">@type.Name</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="grid" class="row my-shuffle-container">
+        @foreach (var item in Model.Tools.OrderBy(a => a.Name))
+        {
+            <figure class="item col-3" data-groups="@item.GetAllTypesJson()">
+                <div class="item__inner">
+                    <a asp-action="@item.Action">
+                        <div class="aspect aspect--16x9">
+                            <div class="aspect__inner">
+                                <div class="aspect__inner_text">
+                                    <h2>@item.Name</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="item-details">
+                        <figcaption class="item__ostype">
+                            @(Lcz["OS"]): @item.OsTypes.ToString()
+                        </figcaption>
+                    </div>
+                </div>
+            </figure>
+        }
+    </div>
+    <div class="col-1@sm my-sizer-element"></div>
+</div>
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" type="text/css" href="~/css/tool/list.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" type="text/css" href="~/css/tool/list.min.css" asp-append-version="true" />
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/lib/shufflejs/dist/shuffle.js"></script>
+        <script type="text/javascript" src="~/js/tool/list.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/lib/shufflejs/dist/shuffle.min.js"></script>
+        <script type="text/javascript" src="~/js/tool/list.min.js" asp-append-version="true"></script>
+    </environment>
+}

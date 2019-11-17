@@ -1,0 +1,224 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/simpleform.min.css",
+    "inputFiles": [
+      "wwwroot/css/simpleform.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/device/list.min.css",
+    "inputFiles": [
+      "wwwroot/css/device/list.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/tool/list.min.css",
+    "inputFiles": [
+      "wwwroot/css/tool/list.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/tool/ping.min.css",
+    "inputFiles": [
+      "wwwroot/css/tool/ping.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/tool/ping-result.min.css",
+    "inputFiles": [
+      "wwwroot/css/tool/ping-result.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/home/index.min.js",
+    "inputFiles": [
+      "wwwroot/js/home/index.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/datatables/plugins/sort-versions.min.js",
+    "inputFiles": [
+      "wwwroot/js/datatables/plugins/sort-versions.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/device/list.en.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.en.js",
+      "wwwroot/js/resources/shared/datatables.en.js",
+      "wwwroot/js/device/list.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/device/list.ru.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.ru.js",
+      "wwwroot/js/resources/shared/datatables.ru.js",
+      "wwwroot/js/device/list.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/device/form.min.js",
+    "inputFiles": [
+      "wwwroot/js/device/form.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/tool/list.min.js",
+    "inputFiles": [
+      "wwwroot/js/tool/list.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/tool/ping.min.js",
+    "inputFiles": [
+      "wwwroot/js/tool/ping.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/glob.en.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.en.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/glob.ru.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.ru.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/device/list.en.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/device/list.en.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/device/list.ru.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/device/list.ru.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/tool/ping-result.en.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.en.js",
+      "wwwroot/js/resources/shared/measures.en.js",
+      "wwwroot/js/resources/shared/progressbar.en.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/tool/ping-result.ru.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.ru.js",
+      "wwwroot/js/resources/shared/measures.ru.js",
+      "wwwroot/js/resources/shared/progressbar.ru.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/home/index.en.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.en.js",
+      "wwwroot/js/resources/shared/database.en.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/resources/home/index.ru.min.js",
+    "inputFiles": [
+      "wwwroot/js/resources/glob.ru.js",
+      "wwwroot/js/resources/shared/database.ru.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

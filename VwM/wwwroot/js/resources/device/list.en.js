@@ -1,0 +1,3 @@
+﻿Lcz.Device = {
+    "Hostname": "Hostname"
+};

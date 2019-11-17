@@ -1,0 +1,33 @@
+﻿.dataTables_wrapper.dt-bootstrap4 .row.row-center {
+    align-items: center;
+}
+
+div.dataTables_length label {
+    margin-bottom: 0;
+}
+
+/* DataTables pageResizer
+-------------------------------------------------- */
+#resize_wrapper {
+    position: relative;
+    height: 350px;
+    padding: 0.5em 0.5em 1.5em 0.5em;
+    background-color: white; /* fix object border bug in IE */
+}
+
+#resize_handle {
+    border-radius: 0.25rem;
+    text-align: center;
+    line-height: 2em;
+    color: #212529;
+    border: 1px solid transparent;
+    border-color: #dee2e6;
+    cursor: pointer;
+    margin-top: .5em;
+}
+
+table.dataTable th,
+table.dataTable td {
+    white-space: nowrap;
+}
+

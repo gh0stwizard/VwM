@@ -1,0 +1,44 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Lcz
+@{
+    ViewData["Title"] = Lcz["Title"];
+    var language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+}
+
+<div class="text-center">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h3>@Lcz["Welcome"], @User.Identity.Name!</h3>
+    }
+    else
+    {
+        <h3>@Lcz["Welcome"]!</h3>
+        <p>@Lcz["SignInIntro"]</p>
+        <a class="btn btn-primary" asp-action="Login">@Lcz["SignIn"]</a>
+    }
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="container pt-4">
+        <div class="row">
+            <h4>@Lcz["DbStatus"] <span id="db" class="badge badge-secondary">@Lcz["Checking"]</span></h4>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/lib/signalr/dist/browser/signalr.js"></script>
+        <script type="text/javascript" src="~/js/home/index.js"></script>
+        <script type="text/javascript" src="@($"/js/resources/glob.{language}.js")"></script>
+        <script type="text/javascript" src="@($"/js/resources/shared/database.{language}.js")"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+        <script type="text/javascript" src="~/js/home/index.min.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="@($"/js/resources/shared/index.{language}.min.js")"></script>
+    </environment>
+}

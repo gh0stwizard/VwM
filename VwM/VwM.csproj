@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="3.0.3" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.435" />
+    <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Whois" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionBuilder\ExpressionBuilder.csproj" />
+    <ProjectReference Include="..\VwM.Authorization\VwM.Authorization.csproj" />
+    <ProjectReference Include="..\VwM.BackgroundServices\VwM.BackgroundServices.csproj" />
+    <ProjectReference Include="..\VwM.Database\VwM.Database.csproj" />
+    <ProjectReference Include="..\VwM.Resources\VwM.Resources.csproj" />
+  </ItemGroup>
+
+</Project>

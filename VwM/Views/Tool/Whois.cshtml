@@ -1,0 +1,122 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Lcz
+@model WhoisViewModel
+@{
+    ViewData["Title"] = Lcz["Title"];
+    var language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+    var hasResult = Model.Updated.HasValue;
+}
+
+<h3 class="text-center">@Lcz["Title"].Value.ToLower()</h3>
+
+@Html.HiddenFor(m => m.Id)
+
+<div class="container pt-4">
+    <div class="form-container">
+        <form class="validate-form w-100" asp-action="StartWhois" asp-antiforgery="true">
+            <partial name="_FormValidation">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">🎯</span>
+                    </div>
+                    <input asp-for="Hostname" class="form-control" autofocus />
+                    <div class="pl-3">
+                        <button type="submit" class="btn btn-dark">@Lcz["Search"]</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+    <div id="result" class="collapse @(hasResult ? "show" : "")">
+        <div class="text-center pt-3">
+            <h4>
+                @Lcz["Results"]
+                @if (hasResult)
+                {
+                    var title = string.Join(" ", Lcz["UpdatedAt"].Value, Model.Updated);
+                    <span class="badge badge-secondary"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="@title">@Lcz["Cached"]</span>
+                }
+            </h4>
+        </div>
+        <div id="result-value" class="container">
+            @if (hasResult)
+            {
+                <pre>@Model.Result</pre>
+            }
+        </div>
+    </div>
+    @if (Model.HasHistory)
+    {
+        var count = 0;
+        <div class="container pt-4 pb-4">
+            <div class="text-center pt-3">
+                <h4>@Lcz["History"]</h4>
+            </div>
+            <div class="accordion" id="history">
+                @foreach (var record in Model.History)
+                {
+                    var collapseId = $"collapse{count}";
+                    var headingId = $"heading{count}";
+                    <div class="card">
+                        <div id="@headingId" class="card-header p-2">
+                            <div class="row">
+                                <div class="col mt-auto mb-auto">
+                                    <button class="btn btn-link" type="button"
+                                            data-toggle="collapse" data-target="#@collapseId"
+                                            aria-expanded="true" aria-controls="@collapseId">
+                                        @record.Hostname
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <ul class="list-group list-group-horizontal justify-content-end small">
+                                        <li class="list-group-item">
+                                            @Lcz["CreatedAt"] @record.Created
+                                        </li>
+                                        <li class="list-group-item">
+                                            @Lcz["UpdatedAt"] @record.Updated
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="@collapseId" class="collapse" aria-labelledby="@headingId" data-parent="#history">
+                            <div class="card-body">
+                                <pre>@record.Result</pre>
+                            </div>
+                        </div>
+                    </div>
+                    count++;
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div id="overlay" style="display: none">
+    <div id="loader"></div>
+</div>
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" type="text/css" href="~/css/tool/whois.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" type="text/css" href="~/css/tool/whois.min.css" asp-append-version="true" />
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/lib/signalr/dist/browser/signalr.js"></script>
+        <script type="text/javascript" src="~/lib/jquery.blockUI/jquery.blockUI.js"></script>
+        <script type="text/javascript" src="~/js/tool/whois.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+        <script type="text/javascript" src="~/lib/jquery.blockUI/jquery.blockUI.min.js"></script>
+        <script type="text/javascript" src="~/js/tool/whois.min.js"></script>
+    </environment>
+}

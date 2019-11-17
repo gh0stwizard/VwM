@@ -1,0 +1,64 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Lcz
+@model PingViewModel
+@{
+    ViewData["Title"] = Lcz["Title"];
+    var language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+}
+
+<h3 class="text-center">@ViewData["Title"]</h3>
+
+<div class="container pt-3">
+    <div class="form-container">
+        <form class="validate-form w-100" asp-action="StartPing" asp-antiforgery="true">
+            <partial name="_FormValidation">
+            <div class="form-group required">
+                <label asp-for="Mode" class="control-label pr-4"></label>
+                <div class="form-check form-check-inline">
+                    <input asp-for="Mode" type="radio" value="DB" id="mode1" class="form-check-input" autocomplete="off" />
+                    <label for="mode1" class="form-check-label">@Lcz["UseDbHosts"]</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input asp-for="Mode" type="radio" value="Page" id="mode2" class="form-check-input" autocomplete="off" />
+                    <label for="mode2" class="form-check-label">@Lcz["InputHosts"]</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hostnames" class="control-label"></label>
+                <textarea asp-for="Hostnames" class="form-control"
+                          placeholder="@Lcz["InputHostsPlaceholder"]"
+                          rows="5" disabled></textarea>
+            </div>
+            <div class="btn-group">
+                @if (!string.IsNullOrEmpty(Model.Mode))
+                {
+                    <button id="start" class="btn btn-success">@Lcz["Start"]</button>
+                }
+                else
+                {
+                    <button id="start" class="btn btn-success disabled" disabled>@Lcz["Start"]</button>
+                }
+                <a href="javascript:history.go(-1)" class="btn btn-secondary">@Lcz["Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" type="text/css" href="~/css/tool/ping.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" type="text/css" href="~/css/tool/ping.min.css" asp-append-version="true" />
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/js/tool/ping.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/js/tool/ping.min.js" asp-append-version="true"></script>
+    </environment>
+}

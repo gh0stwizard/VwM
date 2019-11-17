@@ -1,0 +1,74 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using VwM.Models
+@inject IViewLocalizer Lcz
+@model DeviceViewModel
+@{
+    var language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+    var isCreate = string.IsNullOrEmpty(Model.Id);
+    ViewData["Title"] = isCreate
+        ? Lcz["Title"].Value
+        : string.Format(Lcz["TitleEdit"].Value, Model.Name);
+}
+
+<h3 class="text-center">@ViewData["Title"]</h3>
+
+<div class="container">
+    <div class="form-container">
+        <form class="validate-form" asp-action="Save" asp-antiforgery="true">
+            <partial name="_FormValidation">
+            @Html.HiddenFor(m => m.Id)
+            <div class="form-group required">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group required">
+                <label asp-for="Hostnames" class="control-label"></label>
+                <select asp-for="SelectedHostnames" asp-items="Model.Hostnames" class="form-control" style="width:100%"></select>
+            </div>
+            <div class="float-right">
+                <div class="btn-group">
+                    @if (isCreate)
+                    {
+                        <button type="submit" class="btn btn-primary">@Lcz["Add"]</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary">@Lcz["Save"]</button>
+                    }
+                    <a href="javascript:history.go(-1)" class="btn btn-secondary">@Lcz["Cancel"]</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" type="text/css" href="~/lib/select2/dist/css/select2.css" />
+        @*<link rel="stylesheet" type="text/css" href="~/css/device/form.css" />*@
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" type="text/css" href="~/lib/select2/dist/css/select2.min.css" />
+        @*<link rel="stylesheet" type="text/css" href="~/css/device/form.min.css" asp-append-version="true" />*@
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script type="text/javascript" src="~/lib/select2/dist/js/select2.full.js"></script>
+        <script type="text/javascript" src="~/js/device/form.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" src="~/lib/select2/dist/js/select2.full.min.js"></script>
+        <script type="text/javascript" src="~/js/device/form.min.js" asp-append-version="true"></script>
+    </environment>
+    <script type="text/javascript" src="@($"/lib/select2/dist/js/i18n/{language}.js")"></script>
+}
