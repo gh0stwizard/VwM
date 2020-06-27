@@ -16,13 +16,15 @@ using VwM.BackgroundServices;
 using VwM.Extensions;
 using VwM.BackgroundServices.Whois;
 using VwM.Database.Collections;
-using MongoDB.Driver;
+using VwM.Database.Server;
+
 
 namespace VwM.Hubs
 {
     public class WhoisHub : GenericHub<WhoisHub, WhoisRequestQueue, WhoisTaskQueue>
     {
         private readonly WhoisCollection _whois;
+        private readonly DatabaseStatus _dbStatus;
 
 
         public WhoisHub(
@@ -30,9 +32,11 @@ namespace VwM.Hubs
             IStringLocalizer<WhoisHub> localizer,
             WhoisRequestQueue queue,
             IBackgroundTaskQueue<WhoisTaskQueue> taskQueue,
-            WhoisCollection whois) : base(logger, localizer, queue, taskQueue)
+            WhoisCollection whois,
+            DatabaseStatus serverStatus) : base(logger, localizer, queue, taskQueue)
         {
             _whois = whois;
+            _dbStatus = serverStatus;
         }
 
 
@@ -84,7 +88,9 @@ namespace VwM.Hubs
                                 return;
                             }
 
-                            await UpsertRecordAsync(host, response);
+                            if (_dbStatus.Connected)
+                                await UpsertRecordAsync(host, response);
+
                             await client.SendAsync("Result", host, response.Content);
                         }
                         catch (Exception e)

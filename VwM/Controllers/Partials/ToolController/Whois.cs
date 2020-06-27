@@ -9,7 +9,9 @@ using MongoDB.Driver.Linq;
 using AutoMapper.Extensions.ExpressionMapping;
 using VwM.BackgroundServices.Whois;
 using VwM.Database.Extensions;
+using VwM.Database.Server;
 using VwM.ViewModels;
+using MongoDB.Bson;
 
 namespace VwM.Controllers
 {
@@ -20,12 +22,12 @@ namespace VwM.Controllers
 
 
         [HttpGet]
-        public IActionResult Whois()
+        public async Task<IActionResult> WhoisAsync()
         {
-            var model = new WhoisViewModel
-            {
-                History = GetLastWhoisEntriesAsync()
-            };
+            var model = new WhoisViewModel();
+
+            if (_dbStatus.Connected)
+                model.History = await GetLastWhoisEntriesAsync();
 
             return View(model);
         }
@@ -41,34 +43,43 @@ namespace VwM.Controllers
             if (!ModelState.IsValid)
                 return View("Whois", model);
 
-            var entry = await _whois
-                .Query(a => a.Hostname == model.Hostname)
-                .Select(a => new { a.Updated, a.Result })
-                .SingleOrDefaultAsync();
-
-            if (entry != null && DateTime.UtcNow.Subtract(entry.Updated).TotalDays < WhoisMinUpdateDays)
+            if (_dbStatus.Connected)
             {
-                model.Updated = entry.Updated;
-                model.Result = entry.Result;
-                model.Id = null;
+                var entry = await _whois
+                        .Query(a => a.Hostname == model.Hostname)
+                        .Select(a => new { a.Updated, a.Result })
+                        .SingleOrDefaultAsync();
+
+                if (entry != null
+                    && DateTime.UtcNow.Subtract(entry.Updated).TotalDays < WhoisMinUpdateDays)
+                {
+                    model.Updated = entry.Updated;
+                    model.Result = entry.Result;
+                    model.Id = null;
+                }
+
+                model.History = await GetLastWhoisEntriesAsync();
             }
-            else
+
+            if (!model.Updated.HasValue)
             {
                 var dtos = new List<WhoisDto> { new WhoisDto(model.Hostname) };
                 model.Id = _whoisQueue.Add(dtos);
             }
 
-            model.History = GetLastWhoisEntriesAsync();
-
             return View("Whois", model);
         }
 
 
-        private List<WhoisViewModel.ResultModel> GetLastWhoisEntriesAsync()
+        private async Task<List<WhoisViewModel.ResultModel>> GetLastWhoisEntriesAsync(int take = 10)
         {
-            return _whois.Query()
+            var entries = await _whois.Query()
                 .OrderByDescending(a => a.Updated)
-                .Take(10)
+                .Take(take)
+                .ToListAsync();
+
+            return entries
+                .AsQueryable()
                 .UseAsDataSource(_mapper)
                 .For<WhoisViewModel.ResultModel>()
                 .ToList();
