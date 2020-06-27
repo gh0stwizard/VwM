@@ -8,6 +8,7 @@ namespace VwM.CronTasks
     public class CleanupPingCronTask : ICronTask
     {
         public string Schedule { get; set; } = "* */5 * * *";
+        public bool IncludeSeconds { get; set; } = false;
 
         private readonly ILogger<CleanupPingCronTask> _logger;
         private readonly PingRequestQueue _queue;

@@ -9,9 +9,7 @@ using MongoDB.Driver.Linq;
 using AutoMapper.Extensions.ExpressionMapping;
 using VwM.BackgroundServices.Whois;
 using VwM.Database.Extensions;
-using VwM.Database.Server;
 using VwM.ViewModels;
-using MongoDB.Bson;
 
 namespace VwM.Controllers
 {

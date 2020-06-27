@@ -113,6 +113,7 @@ namespace VwM
             #region cron
             services.AddSingleton<ICronTask, CleanupPingCronTask>();
             services.AddSingleton<ICronTask, CleanupWhoisCronTask>();
+            services.AddSingleton<ICronTask, DbStatusCronTask>();
             services.AddHostedService<CronService>();
             #endregion
 

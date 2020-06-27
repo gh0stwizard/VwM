@@ -28,9 +28,14 @@ namespace VwM.BackgroundServices
 
             foreach (var scheduledTask in scheduledTasks)
             {
+                var opts = new CrontabSchedule.ParseOptions()
+                {
+                    IncludingSeconds = scheduledTask.IncludeSeconds
+                };
+
                 _scheduledTasks.Add(new CronTaskWrapper
                 {
-                    Schedule = CrontabSchedule.Parse(scheduledTask.Schedule),
+                    Schedule = CrontabSchedule.Parse(scheduledTask.Schedule, opts),
                     Task = scheduledTask,
                     NextRunTime = referenceTime
                 });
