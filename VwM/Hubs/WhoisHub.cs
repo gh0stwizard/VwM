@@ -7,11 +7,8 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Localization;
 using Nito.AsyncEx;
-using Whois;
-using Whois.Models;
-using Newtonsoft.Json;
+using YaWhois;
 using MongoDB.Driver;
-using MongoDB.Bson;
 using VwM.BackgroundServices;
 using VwM.Extensions;
 using VwM.BackgroundServices.Whois;
@@ -70,40 +67,38 @@ namespace VwM.Hubs
                 Thread.CurrentThread.CurrentCulture =
                 Thread.CurrentThread.CurrentUICulture = culture;
 
-                var whois = new WhoisLookup();
                 var taskFactory = new TaskFactory(TaskScheduler.Current);
                 var cde = new AsyncCountdownEvent(dtos.Count());
+                var tasks = new List<Task>();
+
+                var whois = new YaWhoisClient();
+                whois.ResponseParsed += Whois_ResponseParsed;
+                whois.ExceptionThrown += Whois_ExceptionThrown;
 
                 foreach (var host in dtos.Select(a => a.Hostname))
                 {
-                    await taskFactory.StartNew(async () =>
+                    var data = new YaWhoisData()
                     {
-                        try
-                        {
-                            var response = await whois.LookupAsync(host);
+                        Client = client,
+                        ClientId = id,
+                        Object = host
+                    };
 
-                            if (response == null)
-                            {
-                                await client.SendAsync("Result", host, "");
-                                return;
-                            }
+                    tasks.Add(taskFactory.StartNew((d) =>
+                    {
+                        whois.QueryAsync(host, token: token, value: d).Wait();
+                        cde.Signal();
+                    }, data, token));
+                }
 
-                            if (_dbStatus.Connected)
-                                await UpsertRecordAsync(host, response);
-
-                            await client.SendAsync("Result", host, response.Content);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.LogError(e, $"Whois {host} failed (clientId: {id}).");
-                            await client.SendAsync("Result", host, e.Message);
-                        }
-                        finally
-                        {
-                            cde.Signal();
-                        }
-                    },
-                    token);
+                try
+                {
+                    Task.WaitAll(tasks.ToArray());
+                }
+                catch (Exception e)
+                {
+                    var obj = e.Data["object"].ToString();
+                    _logger.LogError(e, $"Whois {obj} failed (clientId: {id}).");
                 }
 
                 await cde.WaitAsync();
@@ -111,18 +106,37 @@ namespace VwM.Hubs
         }
 
 
-        private async Task UpsertRecordAsync(string host, WhoisResponse response)
+        private void Whois_ExceptionThrown(object sender, YaWhoisClientEventArgs e)
+        {
+            var data = (YaWhoisData)e.Value;
+            e.Exception.Data.Add("object", data.Object);
+            data.Client.SendAsync("Result", data.Object, e.Exception.Message).Wait();
+        }
+
+
+        private void Whois_ResponseParsed(object sender, YaWhoisClientEventArgs e)
+        {
+            var data = (YaWhoisData)e.Value;
+
+            if (string.IsNullOrEmpty(e.Response))
+                data.Client.SendAsync("Result", data.Object, "").Wait();
+
+            if (_dbStatus.Connected)
+                UpsertRecordAsync(data.Object, e.Response).Wait();
+
+            data.Client.SendAsync("Result", data.Object, e.Response).Wait();
+        }
+
+
+        private async Task UpsertRecordAsync(string host, string response)
         {
             var doc = await _whois.GetFirstOrDefaultAsync(x => x.Hostname == host);
-            var jsonString = JsonConvert.SerializeObject(response, Formatting.None);
-            var bson = BsonDocument.Parse(jsonString);
 
             if (doc != null)
             {
                 var update = Builders<Database.Models.Whois>.Update
                     .Set(o => o.Updated, DateTime.UtcNow)
-                    .Set(o => o.Result, response.Content)
-                    .Set(o => o.ParsedResult, bson);
+                    .Set(o => o.Result, response);
 
                 await _whois.UpdateOneAsync(x => x.Id == doc.Id, update);
             }
@@ -133,13 +147,20 @@ namespace VwM.Hubs
                 {
                     Created = now,
                     Updated = now,
-                    Hostname = response.Domain,
-                    Result = response.Content,
-                    ParsedResult = bson
+                    Hostname = host,
+                    Result = response
                 };
 
                 await _whois.InsertOneAsync(doc);
             }
+        }
+
+
+        private class YaWhoisData
+        {
+            public IClientProxy Client;
+            public string ClientId;
+            public string Object;
         }
     }
 }

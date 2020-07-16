@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -28,9 +27,5 @@ namespace VwM.Database.Models
 
         [BsonElement("Result")]
         public string Result { get; set; }
-
-
-        [BsonElement("ParsedResult")]
-        public BsonDocument ParsedResult { get; set; }
     }
 }
